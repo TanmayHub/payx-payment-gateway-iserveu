@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 
+from .database import Base, engine
+from . import models
+
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="iSUpayX Payment Gateway",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
