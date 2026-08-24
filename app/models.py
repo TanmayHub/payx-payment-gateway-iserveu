@@ -1,4 +1,6 @@
 from datetime import datetime
+import hashlib
+import json
 
 from sqlalchemy import (
     Boolean,
@@ -119,6 +121,7 @@ class Transaction(Base):
         nullable=False,
         index=True,
     )
+    request_fingerprint = Column(String(64), nullable=True)
 
     compliance_flag = Column(Boolean, default=False, nullable=False)
 
