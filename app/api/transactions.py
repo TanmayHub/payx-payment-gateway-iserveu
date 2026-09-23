@@ -211,6 +211,18 @@ def create_transaction(
             500,
         )
 
+    # Publish event after successful transaction creation
+    event_bus.publish(
+                    "txn:transaction:processing",
+                    transaction.transaction_id,
+                    transaction.merchant_id,
+                    transaction.amount,
+                    {
+                        "status": transaction.status,
+                        "reference_id": transaction.reference_id,
+                    },
+                )
+
     return {
         "success": True,
         "data": {
@@ -225,14 +237,4 @@ def create_transaction(
             "timestamp": datetime.now(timezone.utc).isoformat(),
         },
     }
-    # Publish event after successful transaction creation
-    event_bus.publish(
-        "txn:transaction:processing",
-        transaction.transaction_id,
-        transaction.merchant_id,
-        transaction.amount,
-        {
-            "status": transaction.status,
-            "reference_id": transaction.reference_id,
-        },
-    )
+    
